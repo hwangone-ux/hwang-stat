@@ -529,11 +529,14 @@
     border-radius:8px;padding:7px 10px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;
   }
 
+  :root{--drawer-h:min(46vh,460px);}
   #conceptDrawer{
-    position:fixed;top:56px;right:0;bottom:0;width:min(440px,100%);z-index:62;
-    background:#fff;border-left:1px solid #e6ebf2;box-shadow:-16px 0 40px rgba(20,40,70,.1);
-    display:flex;flex-direction:column;
+    position:fixed;left:0;right:0;bottom:0;height:var(--drawer-h);z-index:62;
+    background:#fff;border-top:1px solid #d5deea;box-shadow:0 -16px 40px rgba(20,40,70,.12);
+    display:flex;flex-direction:column;border-radius:14px 14px 0 0;
+    padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px);padding-bottom:env(safe-area-inset-bottom,0px);
   }
+  body.drawer-open #workspace .ws-main{margin-bottom:var(--drawer-h);}
   #conceptDrawer[hidden]{display:none !important;}
   .cd-head{display:flex;align-items:center;gap:8px;padding:14px 16px;border-bottom:1px solid #e6ebf2;flex-shrink:0;}
   .cd-head h2{margin:0;font-size:16px;color:#1a2744;}
@@ -547,6 +550,8 @@
   .cd-nav button.on{background:#2f6fd0;color:#fff;}
   .cd-nav button.day{background:transparent;color:#7b8798;cursor:default;padding-left:4px;}
   .cd-body{overflow:auto;padding:16px 18px 28px;}
+  #conceptDrawer .cd-body > *{max-width:1040px;}
+  #conceptDrawer .cd-nav{flex-wrap:wrap;overflow:visible;row-gap:6px;}
   .cd-body h3{margin:0 0 8px;font-size:22px;color:#1a2744;letter-spacing:-.02em;}
   .cd-body .cp-q{font-size:15.5px;}
   .cd-body table{border-collapse:collapse;width:100%;font-size:13px;margin:8px 0 12px;}
@@ -579,7 +584,8 @@
   .chat-form input{flex:1;border:1px solid #d5deea;border-radius:10px;padding:10px;font:inherit;font-size:14px;}
   .chat-form input:focus{outline:none;border-color:#2f6fd0;box-shadow:0 0 0 3px rgba(47,111,208,.15);}
   .chat-form button{border:0;background:#2f6fd0;color:#fff;border-radius:10px;padding:0 14px;font:inherit;font-weight:800;cursor:pointer;}
-  @media (min-width:901px){ body.drawer-open #chatDock{right:456px;} }
+  body.drawer-open #chatDock{bottom:calc(var(--drawer-h) + 16px);}
+  body.drawer-open #chatPanel{height:min(420px,calc(100vh - var(--drawer-h) - 96px));}
   @media (max-width:900px){
     .login-shell{flex-direction:column;}
     .login-rail{flex-basis:auto;padding:28px 20px;}
@@ -1595,21 +1601,21 @@ var HSTAT = (function(){
       trap:'질문과 다른 방법 이름만 바꾸지 않는다.',
       menu:'필수개념 → 질문에서 분석으로',
       blocks:[
-        {type:'table', heads:['연구 질문','분석','언제'], rows:[
-          ['이 변수는 어디에 모여 있고 얼마나 퍼져 있나','기술통계',''],
-          ['두 숫자가 어느 방향으로, 얼마나 같이 움직이나','상관',''],
-          ['서로 다른 두 집단의 평균이 다른가','독립표본 t',''],
-          ['같은 사람의 두 시점 평균이 다른가','종속표본 t',''],
-          ['세 집단 이상, 또는 요인 둘의 평균이 다른가','분산분석',''],
-          ['숫자 결과를 다른 숫자들로 어떻게 설명하나','선형회귀',''],
-          ['이 문항들은 한 척도로 일관되게 움직이나','신뢰도',''],
-          ['문항들은 몇 개의 공통 개념으로 묶이나','요인분석',''],
-          ['X와 Y의 관계가 제3변수의 수준마다 달라지나','조절','31일'],
-          ['X와 Y 사이에 중간 경로가 있나','매개','31일'],
-          ['조절·매개를 모형 번호로 추정하나','Process / PM','31일'],
-          ['여러 결과변수를 한 번에 집단 비교하나','MANOVA','31일'],
-          ['같은 사람의 세 시점 이상이 달라지나','반복측정','31일'],
-          ['문항으로 잰 잠재개념들의 경로를 함께 보나','구조방정식','31일']
+        {type:'table', heads:['연구 질문','분석'], rows:[
+          ['이 변수는 어디에 모여 있고 얼마나 퍼져 있나','기술통계'],
+          ['두 숫자가 어느 방향으로, 얼마나 같이 움직이나','상관'],
+          ['서로 다른 두 집단의 평균이 다른가','독립표본 t'],
+          ['같은 사람의 두 시점 평균이 다른가','종속표본 t'],
+          ['세 집단 이상, 또는 요인 둘의 평균이 다른가','분산분석'],
+          ['숫자 결과를 다른 숫자들로 어떻게 설명하나','선형회귀'],
+          ['이 문항들은 한 척도로 일관되게 움직이나','신뢰도'],
+          ['문항들은 몇 개의 공통 개념으로 묶이나','요인분석'],
+          ['X와 Y의 관계가 제3변수의 수준마다 달라지나','조절'],
+          ['X와 Y 사이에 중간 경로가 있나','매개'],
+          ['조절·매개를 모형 번호로 추정하나','Process / PM'],
+          ['여러 결과변수를 한 번에 집단 비교하나','MANOVA'],
+          ['같은 사람의 세 시점 이상이 달라지나','반복측정'],
+          ['문항으로 잰 잠재개념들의 경로를 함께 보나','구조방정식']
         ]}
       ]},
     {id:'habits', nav:'숫자를 읽기 전에', title:'숫자를 읽기 전에', group:'공통 습관',
@@ -1676,9 +1682,9 @@ var HSTAT = (function(){
       body:'설문 개념을 탐색할 때는 공통요인분석이 직접적이다. 주성분분석은 전체 분산을 적은 수의 성분으로 압축할 때 쓴다. 둘의 설명률을 같은 숫자로 보고하지 않는다. 개념 사이에 상관이 예상되면 Promax 같은 사각회전을 검토한다. KMO와 Bartlett은 상관 양상에 대한 정보이지 타당도의 합격은 아니다. 고유치 1 초과는 요인 수를 자동으로 정하는 규칙이 아니다.',
       trap:'Varimax는 요인 상관을 0으로 고정한다. 관련이 예상되면 그 제약이 해석을 바꾼다. 이 파일에서는 요인분석 계산이 아직 연결되어 있지 않다.',
       menu:'분석 → 요인분석'},
-    {id:'multi', nav:'다변량분석', title:'다변량분석', group:'10월 31일 · 다변량을 열기 전에',
+    {id:'multi', nav:'다변량분석', title:'다변량분석', group:'다변량을 열기 전에',
       question:'결과변수가 여러 개이거나, 경로가 여러 단계일 때 무엇을 한 모형으로 묻는가.',
-      body:'기초 분석은 결과변수가 하나다. 31일은 그 질문을 넓힌다. 국어·수학·영어는 서로 다른 결과다. 성적10·20·30은 같은 결과의 세 시점이라 분석이 다르다.',
+      body:'기초 분석은 결과변수가 하나다. 다변량분석은 그 질문을 넓힌다. 국어·수학·영어는 서로 다른 결과다. 성적10·20·30은 같은 결과의 세 시점이라 분석이 다르다.',
       trap:'대화상자에 집단내 변수라고 보여도, 서로 다른 과목을 넣었다고 반복측정이 되지는 않는다.',
       menu:'필수개념 → 다변량분석',
       blocks:[{type:'table', heads:['상황','기초 분석과의 차이','분석'], rows:[
@@ -1688,17 +1694,17 @@ var HSTAT = (function(){
         ['같은 사람의 세 시점','종속 t를 세 시점으로','반복측정'],
         ['문항·잠재개념·경로를 한 모형에','요인분석과 회귀를 결합','구조방정식']
       ]}]},
-    {id:'mod', nav:'조절효과', title:'조절효과', group:'10월 31일 · PM01',
+    {id:'mod', nav:'조절효과', title:'조절효과', group:'PM01',
       question:'독립변수와 종속변수의 관계가, 조절변수가 높을 때와 낮을 때 다른가.',
       body:'조절은 상호작용이다. 모형은 Y = b₀ + b₁X + b₂W + b₃(X×W)이고 b₃가 조절이다. 평균중심화를 하면 b₁은 W가 평균일 때의 X 기울기가 된다. 중심화는 그 해석을 만들려고 하는 것이지 상호작용의 유의성을 만들어 내는 절차는 아니다. 설명력이 늘었는지는 ΔR², ΔF로 보고, 이어서 조절변수가 평균과 ±1 SD일 때의 기울기를 읽는다.',
       trap:'주효과만 유의하고 상호작용이 없으면 조절을 주장하지 않는다. 특정 수준에서 기울기가 유의하다는 사실과, 수준마다 기울기가 다르다는 사실은 다르다.',
       menu:'분석 → 조절/매개효과 분석 · PM01'},
-    {id:'med', nav:'매개효과', title:'매개효과', group:'10월 31일 · PM04',
+    {id:'med', nav:'매개효과', title:'매개효과', group:'PM04',
       question:'지정한 모형에서 X와 Y의 연결 중 일부가 M을 거치는가.',
       body:'총효과 c는 M을 넣기 전 X와 Y의 관계다. 직접효과 c′는 M을 넣은 뒤 남은 X→Y다. 간접효과는 a×b다. 간접효과는 정규분포를 잘 따르지 않아서 부트스트랩 신뢰구간에 0이 들어가는지로 읽는다. 부트스트랩은 현재 표본에서 사례를 반복해서 뽑는 절차이지 새 표본을 모으는 일이 아니다.',
       trap:'a와 b가 각각 유의하다는 이유만으로 간접효과를 확정하지 않는다. 직접효과가 유의하지 않다는 사실만으로 완전매개를 입증했다고 쓰지 않는다.',
       menu:'분석 → 조절/매개효과 분석 · PM04'},
-    {id:'process', nav:'Process Macro', title:'Process Macro', group:'10월 31일 · PM 번호',
+    {id:'process', nav:'Process Macro', title:'Process Macro', group:'PM 번호',
       question:'조절과 매개를 경로 그림이 같은 모형 번호로 추정하는가.',
       body:'같은 질문을 PM 번호로 고를 수 있다. PM01은 Process Model 1, PM04는 Model 4처럼 번호가 대응한다. 실행 전에는 화면의 화살표가 내 질문과 같은지 본다. 번호가 크다고 더 좋은 분석이 되는 것은 아니다. 이 파일에서는 조절/매개 계산이 아직 연결되어 있지 않다.',
       trap:'PM04에 매개를 여러 개 넣으면 병렬이다. 순서를 주장하려면 PM06이다. PM05는 직접효과의 조절이지 간접효과를 조절하는 PM07·PM14가 아니다.',
@@ -1711,22 +1717,22 @@ var HSTAT = (function(){
         ['PM07','W가 첫 단계 X→M을 조절하는가'],
         ['PM14','W가 둘째 단계 M→Y를 조절하는가']
       ]}]},
-    {id:'manova', nav:'MANOVA', title:'MANOVA', group:'10월 31일',
+    {id:'manova', nav:'MANOVA', title:'MANOVA', group:'다변량 분석',
       question:'여러 수치 결과의 평균 벡터가 집단 사이에 다른가.',
       body:'만족과 적용을 각각 ANOVA하면 가설이 두 개다. MANOVA는 두 결과의 상관을 포함한 채 집단의 평균 벡터가 같은지를 먼저 묻는다. 다변량 검정이 유의해도 모든 종속변수에서 차이가 있다는 뜻은 아니다. Wilks의 Λ는 작을수록 평균 벡터 차이와 관련된다. 유의하게 나온 통계량만 골라 쓰지 않는다. 절편의 큰 F는 평균이 0과 다른지이지 집단 차이가 아니다.',
       trap:'결과에 가정 검정이 없으면 공분산행렬이 동질하다고 적지 않는다. 성적10·20·30을 여기에 넣으면 시점 변화가 아니다. 이 파일에서는 계산이 아직 없다.',
       menu:'분석 → 분산분석 → 다변량분산분석'},
-    {id:'rm', nav:'반복측정', title:'반복측정', group:'10월 31일',
+    {id:'rm', nav:'반복측정', title:'반복측정', group:'다변량 분석',
       question:'같은 사람의 세 시점(또는 세 조건) 평균은 모두 같은가. 변화의 모양은 집단마다 다른가.',
       body:'종속표본 t는 두 시점이다. 세 시점부터는 반복측정이다. 한 행에 세 시점 값이 나란히 있어야 하고, 열을 따로 정렬해 사례를 재배치하지 않는다. 구형성은 모든 시점 쌍의 차이 분산이 같다는 뜻이고, 각 시점의 분산이 같다는 등분산과는 다르다. 세 시점 이상에서 Mauchly를 보고, 깨져 있으면 미리 정한 보정의 자유도로 p를 읽는다. 유리한 p가 나온 보정만 고르지 않는다.',
       trap:'한 시점이라도 빈 사람을 제외하면 남은 사람이 전체를 대표하는지를 본다. 변수 이름의 숫자를 점수나 집단 번호로 읽지 않는다. 이 파일에서는 계산이 아직 없다.',
       menu:'분석 → 분산분석 → 반복측정 분산분석'},
-    {id:'sem', nav:'구조방정식', title:'구조방정식모형', group:'10월 31일',
+    {id:'sem', nav:'구조방정식', title:'구조방정식모형', group:'다변량 분석',
       question:'문항으로 잠재변수를 재면서, 그 잠재변수 사이의 경로를 한 모형으로 추정하는가.',
       body:'측정모형은 문항과 잠재변수의 연결이고, 구조모형은 잠재변수 사이의 경로다. 첫 문항의 비표준화 적재 1은 척도를 고정한 값이지 그 문항이 더 유의하다는 뜻이 아니다. 간접효과는 이어진 계수의 곱이고, 구간의 방법은 출력에 표시된 절차를 그대로 적는다. 자주 쓰는 적합도 참고선은 CFI·TLI > .95, RMSEA < .06, SRMR < .08이며 절대 합격 규칙은 아니다.',
       trap:'수정지수가 크다고 오차 공분산을 계속 넣으면 자료에 맞춘 모형이 된다. PLS는 목적과 기준이 다르므로 이 적합도 참고선을 PLS에 그대로 옮기지 않는다. 이 파일에서는 계산이 아직 없다.',
       menu:'분석 → 구조방정식모형'},
-    {id:'rest', nav:'그 밖의 분석', title:'목차에 있으나 이번 두 회차의 필수 목록은 아닌 것', group:'필수 목록 밖',
+    {id:'rest', nav:'그 밖의 분석', title:'필수 목록에는 없지만 알아 둘 분석', group:'필수 목록 밖',
       question:'길을 잃지 않도록 이름만 구분해 두었는가.',
       body:'수업에서 이 장들이 열리면 같은 읽는 습관으로 간다. N, 방향, 크기를 같이 보고, 방법 이름만으로 질문을 바꾸지 않는다.',
       trap:'필수 목록에 없다고 해서 틀린 분석은 아니다. 질문의 자료 구조가 그 장과 같아야 한다.',
@@ -1742,7 +1748,7 @@ var HSTAT = (function(){
   ];
   var CONCEPT = {};
   CONCEPTS.forEach(function(c){ CONCEPT[c.id] = c; });
-  var CONCEPT_NAV = ['map','habits','base','desc','corr','tind','tpair','anova','reg','rel','fa',{day:'10월 31일'},'multi','mod','med','process','manova','rm','sem','rest'];
+  var CONCEPT_NAV = ['map','habits','base','desc','corr','tind','tpair','anova','reg','rel','fa','multi','mod','med','process','manova','rm','sem','rest'];
   var MENU_CONCEPT = {
     '기술통계':'desc','상관관계':'corr','독립표본 t-검정':'tind','종속표본 t-검정':'tpair',
     '일원분산분석':'anova','이원분산분석':'anova','공분산분석':'anova','다변량분산분석':'manova','반복측정 분산분석':'rm',
@@ -1753,7 +1759,7 @@ var HSTAT = (function(){
   };
   var LABEL_NOTE = {
     '이원분산분석':{title:'이원분산분석', question:'요인 둘의 주효과와, 그 조합의 상호작용을 같이 보는가.', body:'지역과 성별을 같이 넣으면 지역 주효과, 성별 주효과, 지역×성별 상호작용을 본다. 상호작용은 지역의 차이가 성별마다 다른가이다.', trap:'질문을 바꾸지 않은 채 방법 이름만 바꾸지 않는다.', menu:'분석 → 분산분석 → 이원분산분석', action:'anovaTwoway'},
-    '공분산분석':{title:'공분산분석', question:'집단 비교에 사전 점수 같은 수치 공변량을 넣는가.', body:'공변량을 통제한 뒤에도 집단 평균이 다른지를 본다. 이번 두 회차의 필수 목록 본편은 아니다.', trap:'공변량을 넣었다고 질문이 회귀로 바뀌는 것은 아니다.', menu:'분석 → 분산분석 → 공분산분석', action:'anovaAncova'},
+    '공분산분석':{title:'공분산분석', question:'집단 비교에 사전 점수 같은 수치 공변량을 넣는가.', body:'공변량을 통제한 뒤에도 집단 평균이 다른지를 본다. 필수 목록 본편은 아니다.', trap:'공변량을 넣었다고 질문이 회귀로 바뀌는 것은 아니다.', menu:'분석 → 분산분석 → 공분산분석', action:'anovaAncova'},
     '위계적회귀':{title:'위계적회귀', question:'연구자가 정한 순서로 변수 묶음을 더할 때 설명력이 얼마나 느는가.', body:'위계적 회귀는 순서를 연구자가 정하고 ΔR²를 본다. 단계적 선택으로 유의 변수만 남기는 절차와 같지 않다.', trap:'넣은 순서가 곧 인과 순서는 아니다.', menu:'분석 → 회귀분석 → 위계적회귀', action:'hierarchicalRegression'},
     '만-휘트니 U 검정':{title:'만-휘트니 U 검정', question:'서로 다른 두 집단의 분포를 순위로 비교할 것인가.', body:'차이의 분포가 심할 때 검토하는 비모수검정이다. 독립표본 t의 자동 대체가 아니다.', trap:'정규성 p가 작다는 이유만으로 방법을 바꾸지 않는다. 척도와 모양을 먼저 본다.', menu:'분석 → 비모수검정 → 만-휘트니 U 검정', action:'mannWhitney'},
     '크루스칼-왈리스 검정':{title:'크루스칼-왈리스 검정', question:'세 집단 이상의 분포를 순위로 비교할 것인가.', body:'일원분산분석에 대응하는 순위 검정으로 검토한다. 자동 대체는 아니다.', trap:'유의한 결과만으로 어느 집단이 다른지까지 말하지 않는다.', menu:'분석 → 비모수검정 → 크루스칼-왈리스 검정', action:'kruskalWallis'},
@@ -1761,9 +1767,9 @@ var HSTAT = (function(){
     '프리드만 검정':{title:'프리드만 검정', question:'같은 사람의 세 시점 이상을 순위로 비교할 것인가.', body:'반복측정에 대응하는 순위 검정으로 검토한다. 자동 대체는 아니다.', trap:'변수 이름의 숫자를 시점 대신 집단 번호로 읽지 않는다.', menu:'분석 → 비모수검정 → 프리드만 검정', action:'friedman'},
     '교차분석(카이제곱 검정)':{title:'교차분석', question:'범주와 범주의 빈도가 서로 독립인가.', body:'성별×지역처럼 둘 다 범주일 때의 질문이다. 평균 비교가 아니다.', trap:'수치 점수의 평균 차이를 이 검정으로 바꾸지 않는다.', menu:'분석 → 교차분석(카이제곱 검정)', action:'frequency'},
     '조절/매개효과 분석':{title:'조절/매개효과 분석', question:'조절인가, 매개인가, 둘 다인가.', body:'매개변수 없이 제3변수가 X→Y 기울기를 바꾸면 PM01(조절)이다. X가 M을 거쳐 Y와 연결되면 PM04(매개)이다. 실행 전 화면의 화살표가 질문과 같은지 본다.', trap:'번호가 크다고 더 좋은 분석이 되는 것은 아니다. 이 파일에서는 계산이 아직 없다.', menu:'분석 → 조절/매개효과 분석'},
-    '시계열분석':{title:'시계열분석', question:'별도의 시간 구조가 필요한 자료인가.', body:'이번 두 회차의 필수 목록은 아니고, 별도의 자료 구조가 필요하다.', trap:'횡단 설문에 시점 이름만 붙여 시계열로 부르지 않는다. 이 파일에서는 계산이 아직 없다.', menu:'분석 → 시계열분석'},
-    '패널데이터분석':{title:'패널데이터분석', question:'개체와 시점이 함께 있는 자료인가.', body:'이번 두 회차의 필수 목록은 아니고, 별도의 자료 구조가 필요하다.', trap:'한 시점의 여러 사람을 패널로 부르지 않는다. 이 파일에서는 계산이 아직 없다.', menu:'분석 → 패널데이터분석'},
-    '잠재성장모형':{title:'잠재성장모형', question:'같은 사람의 변화 궤적을 잠재변수로 보는가.', body:'이번 두 회차의 필수 목록은 아니고, 별도의 자료 구조가 필요하다.', trap:'세 시점의 평균 차이만 물으면 먼저 반복측정이다. 이 파일에서는 계산이 아직 없다.', menu:'분석 → 잠재성장모형'},
+    '시계열분석':{title:'시계열분석', question:'별도의 시간 구조가 필요한 자료인가.', body:'필수 목록은 아니고, 별도의 자료 구조가 필요하다.', trap:'횡단 설문에 시점 이름만 붙여 시계열로 부르지 않는다. 이 파일에서는 계산이 아직 없다.', menu:'분석 → 시계열분석'},
+    '패널데이터분석':{title:'패널데이터분석', question:'개체와 시점이 함께 있는 자료인가.', body:'필수 목록은 아니고, 별도의 자료 구조가 필요하다.', trap:'한 시점의 여러 사람을 패널로 부르지 않는다. 이 파일에서는 계산이 아직 없다.', menu:'분석 → 패널데이터분석'},
+    '잠재성장모형':{title:'잠재성장모형', question:'같은 사람의 변화 궤적을 잠재변수로 보는가.', body:'필수 목록은 아니고, 별도의 자료 구조가 필요하다.', trap:'세 시점의 평균 차이만 물으면 먼저 반복측정이다. 이 파일에서는 계산이 아직 없다.', menu:'분석 → 잠재성장모형'},
     '구조방정식모형 - PLS':{title:'구조방정식모형 - PLS', question:'공분산을 재현하는 구조방정식과 같은 기준으로 읽을 것인가.', body:'PLS는 공분산 구조방정식과 목적과 기준이 다르다.', trap:'CFI, TLI, RMSEA, SRMR 참고선을 PLS에 그대로 옮기지 않는다. 이 파일에서는 계산이 아직 없다.', menu:'분석 → 구조방정식모형 - PLS'},
     '다변량분산분석':{title:'다변량분산분석', action:'__none'},
     '반복측정 분산분석':{title:'반복측정 분산분석', action:'__none'},
