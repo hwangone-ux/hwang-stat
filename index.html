@@ -538,6 +538,12 @@
   }
   body.drawer-open #workspace .ws-main{margin-bottom:var(--drawer-h);}
   #conceptDrawer[hidden]{display:none !important;}
+  .cd-resize{height:16px;margin-bottom:-4px;cursor:ns-resize;display:flex;align-items:center;justify-content:center;flex-shrink:0;touch-action:none;border-radius:14px 14px 0 0;}
+  .cd-resize span{width:52px;height:5px;border-radius:999px;background:#c9d3df;transition:background .12s;}
+  .cd-resize:hover span,.cd-resize.dragging span{background:#2f6fd0;}
+  .cd-resize:focus-visible{outline:3px solid rgba(47,111,208,.35);outline-offset:-3px;}
+  body.resizing{cursor:ns-resize;user-select:none;}
+  body.resizing iframe{pointer-events:none;}
   .cd-head{display:flex;align-items:center;gap:8px;padding:14px 16px;border-bottom:1px solid #e6ebf2;flex-shrink:0;}
   .cd-head h2{margin:0;font-size:16px;color:#1a2744;}
   .cd-head p{margin:2px 0 0;font-size:12px;color:#667085;}
@@ -761,6 +767,7 @@
 
   <aside id="conceptHover" hidden aria-live="polite"></aside>
   <aside id="conceptDrawer" hidden aria-label="필수 개념">
+    <div class="cd-resize" id="conceptResize" role="separator" aria-orientation="horizontal" aria-label="필수개념 창 높이 조절 (끌거나 위·아래 화살표, 더블클릭하면 원래 크기)" title="끌어서 높이 조절 · 더블클릭: 원래 크기" tabindex="0"><span></span></div>
     <div class="cd-head">
       <div><h2>필수 개념</h2><p>분석을 고르기 전에 읽는 핵심 개념</p></div>
       <button class="rg-btn rg-ghost sm" type="button" id="conceptClose">닫기</button>
@@ -1840,6 +1847,25 @@ var HSTAT = (function(){
     });
     return out;
   }
+  // 필수개념 창 높이: 손잡이를 끌거나 ↑/↓, 더블클릭하면 기본값. 높이는 이 브라우저에만 기억한다.
+  (function initDrawerResize(){
+    var handle = $('#conceptResize'), drawer = $('#conceptDrawer'); if (!handle || !drawer) return;
+    var root = document.documentElement, KEY = 'statHelper.drawerH', dragging = false;
+    function clamp(px){ return Math.round(Math.max(120, Math.min(window.innerHeight * 0.85, px))); }
+    function setH(px, save){ px = clamp(px); root.style.setProperty('--drawer-h', px + 'px'); if (save){ try { localStorage.setItem(KEY, String(px)); } catch (e){} } }
+    try { var saved = +localStorage.getItem(KEY); if (saved > 0) setH(saved); } catch (e){}
+    handle.addEventListener('pointerdown', function(e){ if (e.button !== 0) return; dragging = true; handle.setPointerCapture(e.pointerId); handle.classList.add('dragging'); document.body.classList.add('resizing'); e.preventDefault(); });
+    handle.addEventListener('pointermove', function(e){ if (dragging) setH(window.innerHeight - e.clientY); });
+    function end(){ if (!dragging) return; dragging = false; handle.classList.remove('dragging'); document.body.classList.remove('resizing'); setH(drawer.getBoundingClientRect().height, true); }
+    handle.addEventListener('pointerup', end); handle.addEventListener('pointercancel', end);
+    handle.addEventListener('dblclick', function(){ root.style.removeProperty('--drawer-h'); try { localStorage.removeItem(KEY); } catch (e){} });
+    handle.addEventListener('keydown', function(e){
+      var cur = drawer.getBoundingClientRect().height;
+      if (e.key === 'ArrowUp'){ setH(cur + 40, true); e.preventDefault(); }
+      else if (e.key === 'ArrowDown'){ setH(cur - 40, true); e.preventDefault(); }
+    });
+    window.addEventListener('resize', function(){ var v = root.style.getPropertyValue('--drawer-h'); if (v) setH(parseFloat(v)); });
+  })();
   (function initConceptChrome(){
     var nav = $('#conceptNav');
     if (!nav) return;
