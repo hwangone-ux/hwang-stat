@@ -440,6 +440,9 @@
 
   .ws-topbar{border-bottom:1px solid #e6ebf2;background:#fff;gap:2px;}
   .ws-logo{color:#1a2744;font-size:20px;}
+  .ws-homebtn{appearance:none;border:1px solid #d5deea;background:#fff;color:#243044;border-radius:8px;display:inline-flex;align-items:center;gap:6px;padding:6px 11px;margin-right:6px;font:inherit;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+  .ws-homebtn:hover{border-color:#2f6fd0;color:#1d4f96;background:#f7fbff;}
+  .ws-homebtn:focus-visible{outline:3px solid rgba(47,111,208,.35);outline-offset:2px;}
   .ws-menu{font-weight:650;font-size:13.5px;color:#243044;padding:8px 10px;border-radius:8px;}
   .ws-menu:hover{background:#eef3f8;}
   .ws-menu.open{background:#e7f0fb;color:#1d4f96;box-shadow:inset 0 -2px 0 #2f6fd0;border-radius:8px 8px 0 0;}
@@ -613,7 +616,8 @@
 <!-- ====================== WORKSPACE VIEW (after login) ====================== -->
 <div id="workspace" hidden>
   <div class="ws-topbar">
-    <button class="ws-logo" type="button" title="홈" id="wsHome"><span>Stat-Helper</span></button>
+    <button class="ws-logo" type="button" title="첫 화면으로" id="wsHome"><span>Stat-Helper</span></button>
+    <button class="ws-homebtn" type="button" id="wsHomeBtn" title="첫 화면으로" aria-label="첫 화면으로"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h5v-6h4v6h5V9.5"/></svg><span>홈</span></button>
     <button class="ws-menu" type="button" data-menu="file">파일</button>
     <button class="ws-menu" type="button" data-menu="analysis">분석</button>
     <button class="ws-menu" type="button" data-menu="table">테이블</button>
@@ -2315,7 +2319,6 @@ var HSTAT = (function(){
     $('#wsLangBtn span').textContent = it.textContent; $$('#wsLangMenu button').forEach(function(b){ b.setAttribute('aria-current', b === it ? 'true' : 'false'); });
     $('#wsLangMenu').hidden = true; if (it.textContent !== '한국어') toast('현재 오프라인 버전은 한국어 화면만 제공합니다.');
   }); });
-  $('#wsHome').addEventListener('click', function(){ toggleReports(false); gridWrap.scrollTo(0, 0); });
   (function(){
     function show(which){ $('#loginView').hidden = which !== 'login'; $('#workspace').hidden = which !== 'ws'; document.title = 'Stat-Helper'; window.scrollTo(0, 0); }
     function startWorkspace(quiet){
@@ -2346,7 +2349,11 @@ var HSTAT = (function(){
       ok.forEach(openFile);
       if (bad.length) setTimeout(function(){ toast('열지 못한 파일: ' + bad.map(function(f){ return f.name; }).join(', '), true, 4200); }, 1200);
     });
-    $('#logoutBtn').addEventListener('click', function(){ $('#wsUserMenu').hidden = true; closeDialog(); show('login'); });
+    // 첫 화면으로: 열어 둔 탭과 자료는 그대로 두고, 시작하기를 누르면 이어서 작업한다
+    function goHome(){ $('#wsUserMenu').hidden = true; closeMenus(); closeDialog(); show('login'); }
+    $('#logoutBtn').addEventListener('click', goHome);
+    $('#wsHomeBtn').addEventListener('click', goHome);
+    $('#wsHome').addEventListener('click', goHome);
   })();
 
   return {
