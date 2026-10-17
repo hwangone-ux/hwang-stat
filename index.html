@@ -443,7 +443,28 @@
   .start-guide .rail-lead{margin:0;font-size:14.5px;line-height:1.6;color:#526074;}
   .start-guide .rail-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;width:100%;margin:14px 0 0;text-align:left;}
   .start-guide .rail-steps li{background:#fff;border:1px solid #e3e9f1;border-radius:12px;padding:16px;}
+  .start-guide h2{font-size:34px;line-height:1.25;}
+  .start-guide .rail-lead{max-width:640px;font-size:15.5px;line-height:1.75;}
+  .sg-stats{list-style:none;margin:18px 0 4px;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;width:100%;}
+  .sg-stats li{background:#fff;border:1px solid #e3e9f1;border-radius:12px;padding:16px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;}
+  .sg-stats b{font-size:30px;line-height:1;color:#2f6fd0;font-weight:800;font-variant-numeric:tabular-nums;}
+  .sg-stats span{font-size:13px;color:#526074;}
+  .sg-h{margin:26px 0 2px;font-size:19px;color:#1a2744;letter-spacing:-.01em;}
+  .sg-values{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:100%;margin-top:12px;text-align:left;}
+  .sg-values article{background:#fff;border:1px solid #e3e9f1;border-radius:12px;padding:18px 18px 16px;}
+  .sg-values h4{margin:0 0 6px;font-size:15.5px;color:#1a2744;}
+  .sg-values p{margin:0;font-size:13.5px;line-height:1.65;color:#526074;}
+  .sg-who{list-style:none;margin:12px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;width:100%;text-align:left;}
+  .sg-who li{border-left:3px solid #2f6fd0;background:#fff;border-radius:0 12px 12px 0;padding:14px 16px;}
+  .sg-who b{display:block;font-size:14.5px;color:#1c2434;margin-bottom:4px;}
+  .sg-who span{display:block;font-size:13px;line-height:1.55;color:#667085;}
+  .sg-cta{width:100%;margin-top:28px;background:#1a2744;color:#fff;border-radius:16px;padding:24px 26px;display:flex;align-items:center;justify-content:space-between;gap:18px;text-align:left;flex-wrap:wrap;}
+  .sg-cta p{margin:0;display:flex;flex-direction:column;gap:4px;}
+  .sg-cta b{font-size:18px;}
+  .sg-cta span{font-size:13.5px;color:#c8d3e6;}
+  .sg-cta .btn-login{width:auto;height:48px;padding:0 26px;flex-shrink:0;}
   @media (max-width:700px){ .start-guide .rail-steps{grid-template-columns:1fr;} .start-guide h2{font-size:22px;} }
+  @media (max-width:700px){ .sg-stats{grid-template-columns:repeat(2,minmax(0,1fr));} .sg-values,.sg-who{grid-template-columns:1fr;} .start-guide h2{font-size:26px;} .sg-cta .btn-login{width:100%;} }
   .card{border-radius:14px;box-shadow:0 8px 28px rgba(20,40,70,.06);}
 
   .ws-topbar{border-bottom:1px solid #e6ebf2;background:#fff;gap:2px;}
@@ -600,15 +621,44 @@
         <button type="button" class="btn-login" id="startBtn">시작하기</button>
         <p class="start-note">회원가입이나 로그인이 필요 없습니다. 적은 상황과 자료는 어디로도 전송되지 않습니다.</p>
       </div>
-      <section class="start-guide" aria-label="사용 안내">
+      <section class="start-guide" aria-label="Stat-Helper 소개">
         <p class="rail-kicker">DASHBOARD / START</p>
-        <h2>질문을 먼저 적으면 메뉴가 정해집니다</h2>
-        <p class="rail-lead">설치 없이 브라우저에서 바로 쓰는 통계 분석 연습 도구입니다.</p>
+        <h2>질문을 먼저 적으면<br>메뉴가 정해집니다</h2>
+        <p class="rail-lead">통계 프로그램 앞에서 “어떤 분석을 눌러야 하지?” 하고 멈춘 적이 있다면, Stat-Helper는 순서를 바꿉니다. 알고 싶은 것을 먼저 정하면 맞는 분석 메뉴와 결과를 읽는 법까지 한 화면에서 안내합니다. 설치도, 회원가입도 필요 없습니다.</p>
+
+        <ul class="sg-stats" aria-label="기능 한눈에">
+          <li><b>15</b><span>분석 메뉴</span></li>
+          <li><b>4</b><span>빈도·평균 요약표</span></li>
+          <li><b>8</b><span>그래프 종류</span></li>
+          <li><b>36</b><span>바로 여는 예제 자료</span></li>
+        </ul>
+
+        <h3 class="sg-h">이렇게 씁니다</h3>
         <ol class="rail-steps">
-          <li><span class="n">1</span><div><b>자료를 연다</b><span>예제, CSV, Excel, istat. 화면으로 끌어다 놓아도 됩니다.</span></div></li>
-          <li><span class="n">2</span><div><b>분석을 고른다</b><span>개념이 있는 항목은 파랗게 표시됩니다. 커서를 올리면 오른쪽에 설명이 나옵니다.</span></div></li>
-          <li><span class="n">3</span><div><b>결과를 읽는다</b><span>N, 방향, 크기를 같이 봅니다. p만으로 문장을 끝내지 않습니다.</span></div></li>
+          <li><span class="n">1</span><div><b>자료를 연다</b><span>예제 자료를 버튼 하나로 열거나, 가지고 있는 CSV · Excel · .istat 파일을 화면에 끌어다 놓으세요. 숫자 변수와 범주 변수를 알아서 구분해 표로 보여 줍니다.</span></div></li>
+          <li><span class="n">2</span><div><b>분석을 고른다</b><span>메뉴에서 파랗게 표시된 항목에는 개념 설명이 붙어 있습니다. 커서만 올려도 이 분석이 어떤 질문에 답하는지와 흔한 실수가 오른쪽에 나옵니다. 무엇을 골라야 할지 모르겠다면 ‘상황으로 분석 찾기’에 상황을 적어 보세요.</span></div></li>
+          <li><span class="n">3</span><div><b>결과를 읽는다</b><span>결과표와 함께 어떤 차이가 얼마나 있는지를 문장으로 정리해 줍니다. N, 방향, 크기를 같이 보여 주어 p값 하나로 결론을 내리는 실수를 막습니다.</span></div></li>
         </ol>
+
+        <h3 class="sg-h">Stat-Helper가 다른 점</h3>
+        <div class="sg-values">
+          <article><h4>설치 없이 바로</h4><p>브라우저만 있으면 바로 열립니다. 파일 하나로 동작하니 수업이나 스터디에서는 링크만 나누면 됩니다.</p></article>
+          <article><h4>표와 해석 문장을 함께</h4><p>t-검정, 분산분석, 회귀분석 결과를 보고서 형식의 표와 해석 문장으로 정리합니다. 그래프는 SVG 파일로 저장할 수 있습니다.</p></article>
+          <article><h4>개념과 실습을 한 곳에서</h4><p>필수개념 19개 항목이 분석 메뉴와 연결되어 있습니다. 실습하다 막히면 그 자리에서 개념을 확인합니다.</p></article>
+          <article><h4>내 자료는 내 브라우저에</h4><p>불러온 자료와 적은 질문은 어디로도 전송되지 않습니다. 모든 계산이 이 브라우저 안에서 이루어집니다.</p></article>
+        </div>
+
+        <h3 class="sg-h">이런 분께 추천합니다</h3>
+        <ul class="sg-who">
+          <li><b>통계를 처음 배우는 학생</b><span>어떤 분석을 언제 쓰는지 질문부터 익힙니다.</span></li>
+          <li><b>보고서·논문을 준비하는 연구자</b><span>설치 없이 분석 결과를 빠르게 확인합니다.</span></li>
+          <li><b>숫자로 설명해야 하는 실무자</b><span>표와 문장으로 바로 공유할 결과를 만듭니다.</span></li>
+        </ul>
+
+        <div class="sg-cta">
+          <p><b>지금 예제 자료로 바로 해 보세요.</b><span>500명의 성별·지역·과목 점수 자료가 준비되어 있습니다.</span></p>
+          <button type="button" class="btn-login" id="startExampleBtn">예제 자료로 시작하기</button>
+        </div>
       </section>
     </div>
   </main>
@@ -2338,6 +2388,7 @@ var HSTAT = (function(){
       }
     }
     $('#startBtn').addEventListener('click', function(){ startWorkspace(); });
+    $('#startExampleBtn').addEventListener('click', function(){ startWorkspace(true); loadDataset(exampleDs()); toast('기본 예제 자료(500사례 · 27변수)를 열었습니다. 분석 · 테이블 · 그래프 메뉴를 사용해 보세요.', false, 3600); });
     // ---------- 파일 끌어다 놓기 ----------
     var dropOv = $('#dropOverlay'), dragDepth = 0, OPENABLE = ['istat', 'json', 'csv', 'txt', 'xlsx', 'xls'];
     function hasFiles(e){ var t = e.dataTransfer && e.dataTransfer.types; return !!t && Array.prototype.indexOf.call(t, 'Files') >= 0; }
