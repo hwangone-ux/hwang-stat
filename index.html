@@ -1591,7 +1591,22 @@ var HSTAT = (function(){
   }
   function exampleDs(){ return fromIstat(JSON.parse($('#exampleData').textContent), '기본예제'); }
   // 장별 예제: [{ch:'03', files:[{name, text}]}]
-  var BOOK = (function(){ try { return JSON.parse($('#bookData').textContent); } catch (e){ return []; } })();
+  var BOOK = (function(){
+    var exampleTitles = {
+      '03': '독립표본 t-검정 예제',
+      '06': '이원분산분석 예제',
+      '07': '공분산분석 예제',
+      '08': '다변량분산분석 MANOVA 예제',
+      '10': '비모수검정 예제',
+      '11': '교차분석 예제'
+    };
+    try {
+      return JSON.parse($('#bookData').textContent).map(function(g){
+        g.title = exampleTitles[g.ch] || '분석 예제';
+        return g;
+      });
+    } catch (e){ return []; }
+  })();
   function openBook(f){ loadDataset(fromCSVText(f.text, f.name)); toast('예제 ‘' + f.name + '’을(를) 열었습니다.'); }
   function reloadFromServer(){
     var t = APP.tabs[APP.cur]; if (!t) return;
@@ -2026,7 +2041,7 @@ var HSTAT = (function(){
       {label: '예제 파일', children: [
         {label: '01 기본 예제', fn: function(){ loadDataset(exampleDs()); toast('기본 예제 자료(500사례 · 27변수)를 열었습니다.'); }}
       ].concat(BOOK.map(function(g){
-        return {label: (+g.ch) + '장 예제', children: g.files.map(function(f){ return {label: f.name, fn: function(){ openBook(f); }}; })};
+        return {label: g.title, children: g.files.map(function(f){ return {label: f.name, fn: function(){ openBook(f); }}; })};
       }))},
       {label: '예제 다운로드', fn: act('exampleBrowser')},
       {label: '저장', fn: saveIstat},
@@ -3792,7 +3807,7 @@ HSTAT.exporter = (function(){
   // ---------- 예제 다운로드 창 ----------
   function catalog(){
     var list = [{group: '기본 예제', name: '기본예제', make: A.exampleDs}];
-    A.BOOK.forEach(function(g){ g.files.forEach(function(f){ list.push({group: (+g.ch) + '장 예제', name: f.name, make: function(){ return A.fromCSVText(f.text, f.name); }}); }); });
+    A.BOOK.forEach(function(g){ g.files.forEach(function(f){ list.push({group: g.title, name: f.name, make: function(){ return A.fromCSVText(f.text, f.name); }}); }); });
     return list;
   }
   A.actions.exampleBrowser = function(){
