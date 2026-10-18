@@ -284,6 +284,7 @@
   }
   .ws-dd-item.has-sub:hover > .ws-submenu{display:block;}
   .ws-submenu.leaf{max-height:calc(100vh - 24px);overflow-y:auto;}
+  .ws-dropdown.concept-menu{max-height:calc(100vh - 72px);overflow-y:auto;}
   .ex-btn{border:1px solid #cfd6dd;background:#fff;color:#374151;border-radius:6px;font:inherit;font-size:12.5px;padding:4px 9px;margin-left:4px;cursor:pointer;}
   .ex-btn:hover{background:#f0f7fd;border-color:var(--accent);color:#2a7cc0;}
   .ex-btn.ex-open{background:var(--accent);border-color:var(--accent);color:#fff;margin-left:0;}
@@ -1821,6 +1822,24 @@ var HSTAT = (function(){
     if (s.action) html += '<button type="button" class="rg-btn rg-primary sm" data-go="' + esc(s.action) + '">이 분석 열기</button>';
     html += '<button type="button" class="rg-btn rg-outline sm" data-open="' + esc(s.concept) + '">이 장 전체</button></div>';
     el.innerHTML = html; el.hidden = false;
+    var menu = $('.ws-dropdown.concept-menu');
+    el.style.left = ''; el.style.top = ''; el.style.width = ''; el.style.maxHeight = '';
+    if (menu){
+      var r = menu.getBoundingClientRect(), gap = 8;
+      if (window.innerWidth >= 520){
+        var width = Math.min(360, window.innerWidth - r.right - gap - 12);
+        el.style.left = (r.right + gap) + 'px';
+        el.style.top = r.top + 'px';
+        el.style.width = width + 'px';
+        el.style.maxHeight = (window.innerHeight - r.top - 12) + 'px';
+      } else {
+        // Small screens share the available height instead of overlapping the menu.
+        el.style.left = '12px';
+        el.style.top = '52vh';
+        el.style.width = 'calc(100vw - 24px)';
+        el.style.maxHeight = 'calc(48vh - 12px)';
+      }
+    }
   }
   function blocksHtml(c){
     return (c.blocks || []).map(function(b){
@@ -2128,16 +2147,22 @@ var HSTAT = (function(){
       e.stopPropagation();
       if (openBtn === btn){ closeMenus(); return; }
       closeMenus(); btn.classList.add('open'); openBtn = btn;
-      var dd = document.createElement('div'); dd.className = 'ws-dropdown';
+      var dd = document.createElement('div'); dd.className = 'ws-dropdown' + (btn.dataset.menu === 'concepts' ? ' concept-menu' : '');
       dd.addEventListener('click', function(ev){ ev.stopPropagation(); });
       (MENUS[btn.dataset.menu] || []).forEach(function(it){ dd.appendChild(buildItem(it)); });
       document.body.appendChild(dd);
       var r = btn.getBoundingClientRect();
       dd.style.left = Math.max(8, Math.min(r.left, window.innerWidth - dd.offsetWidth - 8)) + 'px';
       dd.style.top = (r.bottom + 6) + 'px';
+      if (btn.dataset.menu === 'concepts'){
+        if (window.innerWidth >= 520){
+          var previewWidth = Math.min(360, window.innerWidth - dd.offsetWidth - 32);
+          dd.style.left = Math.max(12, Math.min(r.left, window.innerWidth - dd.offsetWidth - previewWidth - 32)) + 'px';
+        } else dd.style.maxHeight = Math.max(100, window.innerHeight * .52 - r.bottom - 18) + 'px';
+      }
     });
   });
-  document.addEventListener('click', function(e){ if (!e.target.closest('.ws-dropdown')) closeMenus(); });
+  document.addEventListener('click', function(e){ if (!e.target.closest('.ws-dropdown, #conceptHover')) closeMenus(); });
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape'){ closeMenus(); closeConcept(); } });
 
   // =====================================================================
